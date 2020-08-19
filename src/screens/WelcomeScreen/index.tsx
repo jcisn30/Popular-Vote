@@ -10,7 +10,7 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParamList, AppScreens } from '../../navigators/AuthFlowNavigator';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import App from '../../../App';
+
 
 type WelcomeScreenNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.Welcome>;
 interface WelcomeScreenProps {
@@ -26,11 +26,11 @@ const data = [
     {
       title: 'Knowledge is power! Get all the facts and help shape the future, with your right to vote!',
       image: require('../../../assets/welcome-image-2.png'),
-      bg: '#d40707',
+      bg: '#ffffff',
     },
     {
       title: 'Sign up or just get the facts.',
-      image: require('../../../assets/welcome-image-3.png'),
+      image: require('../../../assets/welcome-image-4.png'),
       bg: '#ffffff',
     },
   ];
@@ -83,7 +83,7 @@ const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = (props) => {
       
       const _onDone = () => {
         
-        return (<App />)
+        navigation.navigate(AppScreens.Login)
         }
 
         return (
