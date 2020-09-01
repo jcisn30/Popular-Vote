@@ -12,25 +12,27 @@ import { AuthStackParamList, AppScreens } from '../../navigators/AuthFlowNavigat
 import AppIntroSlider from 'react-native-app-intro-slider';
 
 
+
 type WelcomeScreenNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.Welcome>;
 interface WelcomeScreenProps {
     navigation: WelcomeScreenNavigationProps;
+    
 }
 
 const data = [
     {
-      title: 'We The People',
+      title: '',
       image: require('../../../assets/logo.png'),
       bg: '#ffffff',
     },
     {
-      title: 'Knowledge is power! Get all the facts and help shape the future, with your right to vote!',
+      title: 'Knowledge is power! Get all the facts and help shape the future!',
       image: require('../../../assets/welcome-image-2.png'),
       bg: '#ffffff',
     },
     {
-      title: 'Sign up or just get the facts.',
-      image: require('../../../assets/welcome-image-4.png'),
+      title: 'It is time for the people to rule!',
+      image: require('../../../assets/welcome-image-4.jpg'),
       bg: '#ffffff',
     },
   ];
@@ -62,6 +64,8 @@ const data = [
 
 const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = (props) => {
     const { navigation } = props;
+    const  username  = " ";
+    
     
     const _renderItem = ({item}: {item: Item}) => {
         return (
@@ -83,7 +87,7 @@ const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = (props) => {
       
       const _onDone = () => {
         
-        navigation.navigate(AppScreens.Login)
+        navigation.navigate(AppScreens.Signup, {username})
         }
 
         return (

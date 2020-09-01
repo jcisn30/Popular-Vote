@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "popular_vote",
-    "slug": "popular_vote",
+    "name": "we_the_people",
+    "slug": "we_the_people",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,8 +16,11 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "facebookAppId": "756528398503142",
+    "facebookDisplayName": "We The People",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.expofirebaseauth"
     },
     "web": {
       "favicon": "./assets/favicon.png"
