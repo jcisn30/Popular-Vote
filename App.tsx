@@ -4,6 +4,7 @@ import AuthFlowNavigator from './src/navigators/AuthFlowNavigator';
 import * as firebase from 'firebase';
 
 
+
 var firebaseConfig = {
     apiKey: "AIzaSyBxdWdasp6_OWDSCCbfifW45H0pkMR7r60",
     authDomain: "we-the-people-e376e.firebaseapp.com",
@@ -16,8 +17,12 @@ var firebaseConfig = {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 
+
+  
+
 export default function App() {
     return (
+    
         <NavigationContainer>
             <AuthFlowNavigator />
         </NavigationContainer>

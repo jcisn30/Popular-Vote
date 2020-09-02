@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TextInput, Button, View, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { AppScreens, AuthStackParamList } from '../../../navigators/AuthFlowNavigator';
+
 import { StackNavigationProp } from '@react-navigation/stack';
 import firebase from 'firebase';
 type LoginScreenNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.Login>;
@@ -90,7 +91,7 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
           firebase
              .auth()
              .signInWithEmailAndPassword(email, password)
-             .then(() => navigation.navigate(AppScreens.Home))
+             .then(() => navigation.navigate(AppScreens.Main))
             .catch(error => {   
               alert('Oops! Something went awry, try re-entering your email and password');
            })
@@ -129,7 +130,7 @@ return (
                 {/* <Text>Or</Text> */}
                 <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Signup, { username })}>Signup</Text>
                 <Text>or just give your free opinion</Text>
-                <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Home)}>Home</Text>
+                <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Main)}>Home</Text>
             </View>
         </SafeAreaView>
     </TouchableWithoutFeedback>

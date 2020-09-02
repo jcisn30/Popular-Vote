@@ -105,7 +105,7 @@ const SignupScreen: React.FunctionComponent<SignupScreenProps> = (props) => {
     const SignUp = (email: string, password: string) => {
         try {
             firebase.auth().createUserWithEmailAndPassword(email,password)
-            .then(() => navigation.navigate(AppScreens.Home))
+            .then(() => navigation.navigate(AppScreens.Main))
             .catch(error => {   
               alert('Oops! Something went awry, try re-entering your email and password');
            })
@@ -141,7 +141,7 @@ return (
                 <Text style={styles.SignUpText}>have an account?</Text>
                 <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Login)}>Login</Text>
                 <Text>or just give your free opinion</Text>
-                <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Home)}>Home</Text>
+                <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Main)}>Home</Text>
             </View>
         </SafeAreaView>
     </TouchableWithoutFeedback>
