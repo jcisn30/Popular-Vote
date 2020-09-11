@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TextInput, Alert, Button, View, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { AppScreens, AuthStackParamList } from '../../../navigators/AuthFlowNavigator';
 import { StackNavigationProp } from '@react-navigation/stack';
-import firebase from 'firebase';
+import {firebase} from '../../../firebase/config';
+import { Ionicons } from '@expo/vector-icons';
+
 
 type SignupScreenNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.Signup>;
 export type SignupParams = {
@@ -22,7 +24,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'flex-start',
-        margin: 10,
+        margin: 0,
         backgroundColor: '#ffffff'
     },
     btnClose: {
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 80,
+        marginTop: 90,
         width: '70%',
     },
     txtUsername: {
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
         borderColor: 'grey',
         marginTop: 4,
         marginBottom: 10,
-        padding: 20,
+        padding: 10,
         width: '100%',
         
     },
@@ -97,22 +99,44 @@ const styles = StyleSheet.create({
 const SignupScreen: React.FunctionComponent<SignupScreenProps> = (props) => {
     const { navigation, route } = props;
     const { params } = route;
-    const [username, setUsername] = useState<string>('');
+    const [username, setUserName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     // const { email, password } = params;
-    const back = () => navigation.navigate(AppScreens.Welcome)
+    const back = () => navigation.navigate(AppScreens.Welcome);
+
+    
 
     const SignUp = (email: string, password: string) => {
         try {
             firebase.auth().createUserWithEmailAndPassword(email,password)
             .then(() => navigation.navigate(AppScreens.Main))
-            .catch(error => {   
-              alert('Oops! Something went awry, try re-entering your email and password');
+            .catch((error: any) => {   
+              Alert.alert('Oops! Something went awry, try re-entering your email and password');
            })
          }catch(err){
             alert(err);
          }
+         try {
+             const user = firebase.auth().currentUser;
+             if (user != null) {
+             user.updateProfile({
+                displayName: username,
+                photoURL: "https://i.stack.imgur.com/l60Hf.png",
+              }).then(function() {
+                // Update successful.
+              }).catch(function(error) {
+                // An error happened.
+              });}
+         }
+         catch(err){
+            alert(err);
+         
         }
+        }
+
+
+    
 
 return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -129,19 +153,25 @@ return (
             <View style={styles.txtSignupScreenContainer}>
             <TextInput
                     value={username}
+                    placeholder="user name"
+                    style={styles.textInput}
+                    onChangeText={(text) => setUserName(text)}
+                />
+            <TextInput
+                    value={email}
                     placeholder="email address"
                     style={styles.textInput}
-                    onChangeText={(text) => setUsername(text)}
+                    onChangeText={(text) => setEmail(text)}
                 />
                 <TextInput value={password} placeholder="password" secureTextEntry={true} style={styles.textInput}  onChangeText={(text) => setPassword(text)} />
-                <Text style={styles.button} onPress={() => SignUp(username, password)}>Sign Up</Text>
+                <Text style={styles.button} onPress={() => SignUp(email, password)}>Sign Up</Text>
             </View>
 
             <View style={styles.btnLoginContainer}>
-                <Text style={styles.SignUpText}>have an account?</Text>
+                {/* <Text style={styles.SignUpText}>have an account?</Text> */}
                 <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Login)}>Login</Text>
-                <Text>or just give your free opinion</Text>
-                <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Main)}>Home</Text>
+                {/* <Text>or just give your free opinion</Text> */}
+                <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Main)}>Share your voice</Text>
             </View>
         </SafeAreaView>
     </TouchableWithoutFeedback>

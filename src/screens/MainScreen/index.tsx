@@ -8,6 +8,7 @@ import Home from '../../screens/HomeScreen';
 import Profile from '../../screens/ProfileScreen';
 
 
+
 const tabs: TabsConfigsType = {
     Home: {
         icon: ({ progress }) => <Ionicons name={'md-home'} size={24}/>
@@ -24,7 +25,7 @@ export default function Main() {
 <SafeAreaProvider>
 <Tab.Navigator
         tabBar={props => (
-          <AnimatedTabBar tabs={tabs} {...props} />
+          <AnimatedTabBar tabs={tabs} {...props} barColor='red'/>
         )}
       >
         <Tab.Screen

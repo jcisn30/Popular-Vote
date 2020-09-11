@@ -1,10 +1,17 @@
-import React, { FunctionComponent }  from 'react';
+import React, { FunctionComponent, useEffect, useState }  from 'react';
+import 'react-native-gesture-handler';
+import {decode, encode} from 'base-64';
 import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from '../../screens/WelcomeScreen';
 import LoginScreen from '../../screens/Auth/LoginScreen';
 import Main from '../../screens/MainScreen';
 import SignupScreen, { SignupParams } from '../../screens/Auth/SignupScreen';
+import { MainParams } from '../../screens/HomeScreen';
 
+
+
+if (!global.btoa) {  global.btoa = encode }
+if (!global.atob) { global.atob = decode }
 
 //name constants for nav screens
 export enum AppScreens {
@@ -24,7 +31,9 @@ export type AuthStackParamList = {
 
 //create navigation and export it
 const AuthStack = createStackNavigator<AuthStackParamList>();
-const AuthFlowNavigator: FunctionComponent = () => {
+const AuthFlowNavigator: FunctionComponent = () => {;
+   
+
     return (
         <AuthStack.Navigator headerMode="none">
             <AuthStack.Screen name={AppScreens.Welcome} component={WelcomeScreen} />

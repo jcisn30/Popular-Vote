@@ -26,15 +26,15 @@ const data = [
       bg: '#ffffff',
     },
     {
-      title: 'Knowledge is power! Get all the facts and help shape the future!',
-      image: require('../../../assets/welcome-image-2.png'),
+      title: '---- How it works ----',
+      image: require('../../../assets/welcome-2.png'),
       bg: '#ffffff',
     },
-    {
-      title: 'It is time for the people to rule!',
-      image: require('../../../assets/welcome-image-4.jpg'),
-      bg: '#ffffff',
-    },
+    // {
+    //   title: 'It is time for the people to rule!',
+    //   image: require('../../../assets/welcome-image-4.jpg'),
+    //   bg: '#ffffff',
+    // },
   ];
   
   type Item = typeof data[0];
@@ -75,8 +75,8 @@ const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = (props) => {
               backgroundColor: item.bg,
             }}>
             <SafeAreaView style={styles.slide}>
+            <Text style={styles.title}>{item.title}</Text>
               <Image source={item.image} style={styles.image} />
-              <Text style={styles.title}>{item.title}</Text>
             </SafeAreaView>
           </View>
         );

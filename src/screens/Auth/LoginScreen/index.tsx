@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TextInput, Button, View, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TextInput, Alert, Button, View, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { AppScreens, AuthStackParamList } from '../../../navigators/AuthFlowNavigator';
 
 import { StackNavigationProp } from '@react-navigation/stack';
-import firebase from 'firebase';
+import {firebase} from '../../../firebase/config';
 type LoginScreenNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.Login>;
 interface LoginScreenProps {
     navigation: LoginScreenNavigationProps;
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'flex-start',
-        margin: 10,
+        margin: 0,
         backgroundColor: '#ffffff'
     },
     btnClose: {
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 100,
+        marginTop: 90,
         width: '70%',
     },
     image: {
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         borderColor: 'grey',
         marginTop: 4,
         marginBottom: 10,
-        padding: 20,
+        padding: 10,
         width: '100%',
     },
     textInputContainer: {
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         color: 'red',
         fontSize: 20,
         textAlign: 'center',
-        marginBottom: 10
+        marginBottom: 20
     }
 });
 const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
@@ -93,7 +93,7 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
              .signInWithEmailAndPassword(email, password)
              .then(() => navigation.navigate(AppScreens.Main))
             .catch(error => {   
-              alert('Oops! Something went awry, try re-entering your email and password');
+              Alert.alert('Oops! Something went awry, try re-entering your email and password');
            })
          }catch(err){
             alert(err);
@@ -129,8 +129,8 @@ return (
             <View style={styles.btnSignupContainer}>
                 {/* <Text>Or</Text> */}
                 <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Signup, { username })}>Signup</Text>
-                <Text>or just give your free opinion</Text>
-                <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Main)}>Home</Text>
+                {/* <Text>or just give your free opinion</Text> */}
+                <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Main)}>Share your voice</Text>
             </View>
         </SafeAreaView>
     </TouchableWithoutFeedback>
