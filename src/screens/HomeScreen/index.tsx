@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import {firebase} from '../../firebase/config';
+import { connect } from 'react-redux'
+// import {firebase} from '../../firebase/config';
 
 export type MainParams = {
     username: string;
@@ -10,18 +11,20 @@ export type MainParams = {
 
 
 
+
+
 const Home = () => {
     
-    var user = firebase.auth().currentUser
+    // var user = firebase.auth().currentUser
     
     return (
         <View style={[styles.body]}>
-        <Text>{user?.displayName}</Text>
+        <Text></Text>
         </View>
     )
 }
 
-export default Home
+export default Home;
 
 const styles = StyleSheet.create({
     body: {

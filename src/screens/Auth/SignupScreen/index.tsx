@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView, StyleSheet, Text, TextInput, Alert, Button, View, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { AppScreens, AuthStackParamList } from '../../../navigators/AuthFlowNavigator';
 import { StackNavigationProp } from '@react-navigation/stack';
-import {firebase} from '../../../firebase/config';
-import { Ionicons } from '@expo/vector-icons';
+import { signup, setError } from '../../../store/actions/authActions';
+import { RootState } from '../../../store';
+import firebase from '../../../firebase/config';
+
 
 
 type SignupScreenNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.Signup>;
 export type SignupParams = {
-    username: string;
+    email: string;
+    
 };
 interface SignupScreenProps {
     route: { params: SignupParams };
     navigation: SignupScreenNavigationProps;
+    
 }
 const styles = StyleSheet.create({
     btnLoginContainer: {
@@ -29,7 +34,7 @@ const styles = StyleSheet.create({
     },
     btnClose: {
         alignSelf: 'flex-start',
-        marginLeft: 20,
+        marginLeft: 30,
         marginBottom: 0
       },
     closeText: {
@@ -84,56 +89,103 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 10,
-        borderColor: 'red',
+        borderColor: '#d00909',
         borderWidth: 1,
         padding: 10,
         borderRadius: 5
     },
     OptionText: {
-        color: 'red',
+        color: '#d00909',
         fontSize: 20,
         textAlign: 'center',
         marginBottom: 20
+    },
+    txtError: {
+        color: '#d00909',
+        marginTop: 15,
+        marginBottom: 10
     }
 });
 const SignupScreen: React.FunctionComponent<SignupScreenProps> = (props) => {
-    const { navigation, route } = props;
+    
+    
+    const { navigation, route} = props;
     const { params } = route;
-    const [username, setUserName] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    // const [username, setUserName] = useState<string>('');
+    // const [email, setEmail] = useState<string>('');
+    // const [password, setPassword] = useState<string>('');
     // const { email, password } = params;
+    const [firstName, setFirstName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
+    const { error } = useSelector((state: RootState) => state.auth);
     const back = () => navigation.navigate(AppScreens.Welcome);
 
-    
 
-    const SignUp = (email: string, password: string) => {
-        try {
-            firebase.auth().createUserWithEmailAndPassword(email,password)
-            .then(() => navigation.navigate(AppScreens.Main))
-            .catch((error: any) => {   
-              Alert.alert('Oops! Something went awry, try re-entering your email and password');
-           })
-         }catch(err){
-            alert(err);
-         }
-         try {
-             const user = firebase.auth().currentUser;
-             if (user != null) {
-             user.updateProfile({
-                displayName: username,
-                photoURL: "https://i.stack.imgur.com/l60Hf.png",
-              }).then(function() {
-                // Update successful.
-              }).catch(function(error) {
-                // An error happened.
-              });}
-         }
-         catch(err){
-            alert(err);
+    useEffect(() => {
+        return () => {
+          if(error) {
+            dispatch(setError(''));
+           
+          }
+          
+        }
+      }, [error, dispatch]);
+    
+      const submitHandler = ( email: string, password: string) => {
+        if(error) {
+          dispatch(setError(''));
+        
+        }
+         else {
+        
+        setLoading(true);
+        dispatch(signup({ email, password, firstName }, () => setLoading(false)));
+        
+    
+        }
+      }
+   
+      function checkSignIn(){
+        firebase.auth().onAuthStateChanged(function(user) {
+           if (user) {
+              navigation.navigate("Main")
+            //   console.log(user);
+           } else {
+              
+          }
+     })
+   }
+
+    // const SignUp = (email: string, password: string) => {
+    //     try {
+    //         firebase.auth().createUserWithEmailAndPassword(email,password)
+    //         .then(() => navigation.navigate(AppScreens.Main))
+    //         .catch((error: any) => {   
+    //           Alert.alert('Oops! Something went awry, try re-entering your email and password');
+    //        })
+    //      }catch(err){
+    //         alert(err);
+    //      }
+    //      try {
+    //          const user = firebase.auth().currentUser;
+    //          if (user != null) {
+    //          user.updateProfile({
+    //             displayName: username,
+    //             photoURL: "https://i.stack.imgur.com/l60Hf.png",
+    //           }).then(function() {
+    //             // Update successful.
+    //           }).catch(function(error:any) {
+    //             // An error happened.
+    //           });}
+    //      }
+    //      catch(err){
+    //         alert(err);
          
-        }
-        }
+    //     }
+    //     }
 
 
     
@@ -151,11 +203,12 @@ return (
             </View>
 
             <View style={styles.txtSignupScreenContainer}>
+            <Text style={styles.txtError}>{error}</Text>
             <TextInput
-                    value={username}
-                    placeholder="user name"
+                    value={firstName}
+                    placeholder="first name"
                     style={styles.textInput}
-                    onChangeText={(text) => setUserName(text)}
+                    onChangeText={(text) => setFirstName(text)}
                 />
             <TextInput
                     value={email}
@@ -163,8 +216,13 @@ return (
                     style={styles.textInput}
                     onChangeText={(text) => setEmail(text)}
                 />
-                <TextInput value={password} placeholder="password" secureTextEntry={true} style={styles.textInput}  onChangeText={(text) => setPassword(text)} />
-                <Text style={styles.button} onPress={() => SignUp(email, password)}>Sign Up</Text>
+                
+				
+
+<TextInput value={password} placeholder="password" secureTextEntry={true} style={styles.textInput}  onChangeText={(text) => setPassword(text)} />
+                
+                
+                <Text style={styles.button} onPress={() => {submitHandler( email, password); checkSignIn()}}>Sign Up</Text>
             </View>
 
             <View style={styles.btnLoginContainer}>

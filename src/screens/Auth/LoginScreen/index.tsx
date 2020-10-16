@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent, useEffect  } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView, StyleSheet, Text, TextInput, Alert, Button, View, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { AppScreens, AuthStackParamList } from '../../../navigators/AuthFlowNavigator';
-
 import { StackNavigationProp } from '@react-navigation/stack';
-import {firebase} from '../../../firebase/config';
+import { signin, setError, sendPasswordResetEmail } from '../../../store/actions/authActions';
+import { RootState } from '../../../store';
+import firebase from '../../../firebase/config';
+
 type LoginScreenNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.Login>;
 interface LoginScreenProps {
     navigation: LoginScreenNavigationProps;
@@ -23,7 +26,7 @@ const styles = StyleSheet.create({
     },
     btnClose: {
       alignSelf: 'flex-start',
-      marginLeft: 20,
+      marginLeft: 30,
       marginBottom: 0
     },
     closeText: {
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 10,
-        borderColor: 'red',
+        borderColor: '#d00909',
         borderWidth: 1,
         padding: 10,
         borderRadius: 5
@@ -72,33 +75,74 @@ const styles = StyleSheet.create({
         top: 0
     },
     OptionText: {
-        color: 'red',
+        color: '#d00909',
         fontSize: 20,
         textAlign: 'center',
         marginBottom: 20
+    },
+    txtError: {
+        color: '#d00909',
+        marginTop: 15,
+        marginBottom: 10
     }
 });
 const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
     const { navigation } = props;
-    const [username, setUsername] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    // const [username, setUsername] = useState<string>('');
+    // const [password, setPassword] = useState<string>('');
+    const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { error } = useSelector((state: RootState) => state.auth);
     const back = () => navigation.navigate(AppScreens.Welcome);
+
+    useEffect(() => {
+        return () => {
+          if(error) {
+            dispatch(setError(''));
+            
+          }
+        }
+      }, [error, dispatch]);
+
+
+      const submitHandler = (email: string, password: string) => {
+        
+        if(error) {
+          dispatch(setError(''));
+          
+        }
+        setLoading(true);
+        dispatch(signin({ email, password }, () => setLoading(false)));
+      }
+
+      function checkSignIn(){
+        firebase.auth().onAuthStateChanged(function(user) {
+           if (user) {
+              navigation.navigate("Main")
+            //   console.log(user);
+           } else {
+              
+          }
+     })
+   }
     
     
 
-    const Login = (email: string, password: string) => {
-        try {
-          firebase
-             .auth()
-             .signInWithEmailAndPassword(email, password)
-             .then(() => navigation.navigate(AppScreens.Main))
-            .catch(error => {   
-              Alert.alert('Oops! Something went awry, try re-entering your email and password');
-           })
-         }catch(err){
-            alert(err);
-         }
-        }
+    // const Login = (email: string, password: string) => {
+    //     try {
+    //       firebase
+    //          .auth()
+    //          .signInWithEmailAndPassword(email, password)
+    //          .then(() => navigation.navigate(AppScreens.Main))
+    //         .catch((error: any) => {   
+    //           Alert.alert('Oops! Something went awry, try re-entering your email and password');
+    //        })
+    //      }catch(err){
+    //         alert(err);
+    //      }
+    //     }
 
 return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -115,20 +159,25 @@ return (
 
             
             <View style={styles.txtLoginScreenContainer} >
+            <Text style={styles.txtError}>{error}</Text>
                 <TextInput
-                    value={username}
-                    placeholder="username"
-                    style={styles.textInput}
-                    onChangeText={(text) => setUsername(text)}
+                    // value={username}
+                    // placeholder="username"
+                    
+                    // onChangeText={(text) => setUsername(text)}
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            placeholder="Email address"
+            style={styles.textInput}
                 />
                 <TextInput value={password} placeholder="password" secureTextEntry={true} style={styles.textInput}  onChangeText={(text) => setPassword(text)} />
-                <Text style={styles.button} onPress={() => Login(username, password)}>Login</Text>
+                <Text style={styles.button} onPress={() => {submitHandler(email, password); checkSignIn()}}>Login</Text>
             </View>
            
             
             <View style={styles.btnSignupContainer}>
                 {/* <Text>Or</Text> */}
-                <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Signup, { username })}>Signup</Text>
+                <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Signup, { email})}>Signup</Text>
                 {/* <Text>or just give your free opinion</Text> */}
                 <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Main)}>Share your voice</Text>
             </View>

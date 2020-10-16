@@ -10,6 +10,7 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthStackParamList, AppScreens } from '../../navigators/AuthFlowNavigator';
 import AppIntroSlider from 'react-native-app-intro-slider';
+import firebase from '../../firebase/config';
 
 
 
@@ -26,7 +27,7 @@ const data = [
       bg: '#ffffff',
     },
     {
-      title: '---- How it works ----',
+      title: 'How it works',
       image: require('../../../assets/welcome-2.png'),
       bg: '#ffffff',
     },
@@ -49,25 +50,36 @@ const data = [
     image: {
       width: 320,
       height: 320,
-      marginTop: 0,
+      marginBottom: 120,
     },
     title: {
-      fontSize: 22,
+      fontSize: 30,
       color: 'black',
       textAlign: 'center',
       paddingLeft: 10,
-      paddingRight: 10
+      paddingRight: 10,
     }, 
   });
 
-
+  
 
 const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = (props) => {
     const { navigation } = props;
-    const  username  = " ";
+    const  email = " ";
     
+    function checkSignIn(){
+      firebase.auth().onAuthStateChanged(function(user) {
+         if (user) {
+            navigation.navigate("Main")
+            // console.log(user);
+         } else {
+            
+        }
+   })
+  }
     
     const _renderItem = ({item}: {item: Item}) => {
+      checkSignIn();
         return (
           <View
             style={{
@@ -87,7 +99,7 @@ const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = (props) => {
       
       const _onDone = () => {
         
-        navigation.navigate(AppScreens.Signup, {username})
+        navigation.navigate(AppScreens.Signup, {email})
         }
 
         return (
