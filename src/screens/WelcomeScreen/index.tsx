@@ -20,6 +20,7 @@ interface WelcomeScreenProps {
     
 }
 
+//both welcome screens text content and images
 const data = [
     {
       title: '',
@@ -31,11 +32,6 @@ const data = [
       image: require('../../../assets/welcome-2.png'),
       bg: '#ffffff',
     },
-    // {
-    //   title: 'It is time for the people to rule!',
-    //   image: require('../../../assets/welcome-image-4.jpg'),
-    //   bg: '#ffffff',
-    // },
   ];
   
   type Item = typeof data[0];
@@ -67,11 +63,11 @@ const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = (props) => {
     const { navigation } = props;
     const  email = " ";
     
+    //check if user is logged in (already signup and login before),if so take them to main pages
     function checkSignIn(){
       firebase.auth().onAuthStateChanged(function(user) {
          if (user) {
             navigation.navigate("Main")
-            // console.log(user);
          } else {
             
         }
@@ -94,11 +90,9 @@ const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = (props) => {
         );
       };
     
+      //welcome slide variables
       const _keyExtractor = (item: Item) => item.title;
-    
-      
       const _onDone = () => {
-        
         navigation.navigate(AppScreens.Signup, {email})
         }
 
@@ -114,11 +108,8 @@ const WelcomeScreen: React.FunctionComponent<WelcomeScreenProps> = (props) => {
               data={data}
               onDone={_onDone}
             />
-          </View>
-        );
-
-        
-        
+          </View>    
+        );    
       }
     
 

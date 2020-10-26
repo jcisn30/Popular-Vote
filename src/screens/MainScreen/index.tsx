@@ -1,14 +1,14 @@
 import React from 'react';
+import { StyleSheet, View, Text, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AnimatedTabBar, {TabsConfigsType} from 'curved-bottom-navigation-bar';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import Home from '../../screens/HomeScreen';
 import Profile from '../../screens/ProfileScreen';
 import Data from '../../screens/DataScreen';
-
-
+import { withTheme } from 'react-native-elements';
 
 const tabs: TabsConfigsType = {
     Home: {
@@ -27,8 +27,12 @@ const Tab = createBottomTabNavigator();
 export default function Main() {
     return (
       
-<SafeAreaProvider>
-<Tab.Navigator
+    <SafeAreaProvider>
+      <StatusBar barStyle="dark-content"/>
+      <SafeAreaView style={styles.safe}> 
+        <Text style={[styles.heading]}>We The People</Text>
+        </SafeAreaView>
+      <Tab.Navigator
         tabBar={props => (
           <AnimatedTabBar tabs={tabs} {...props} barColor='#d00909'/>
         )}
@@ -45,8 +49,25 @@ export default function Main() {
           name="Profile"
           component={Profile}
         />
-         </Tab.Navigator>
- 
-</SafeAreaProvider>
+        </Tab.Navigator>   
+        
+    </SafeAreaProvider>
+
  )
 }
+
+const styles = StyleSheet.create({
+  heading: {
+      paddingTop: 40,
+      textAlign: 'center',
+      fontFamily: 'alex-brush',
+      fontSize: 40,
+      backgroundColor: '#ffffff',
+  },
+  safe: {
+    color: 'black',
+    backgroundColor: 'white',
+
+
+  }
+})
