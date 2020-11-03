@@ -7,15 +7,16 @@ import { ActionSheetIOS } from 'react-native';
 
 
 //create measure
-export const addMeasure   =  (measure: string, id: string, yeas: number, neas: number, onError: () => void): ThunkAction<void, RootState, null, MeasureAction>  =>  {
+export const addMeasure   =  (measure: string, description: string, id: string, yeas: number, neas: number, createdAt: any, onError: () => void): ThunkAction<void, RootState, null, MeasureAction>  =>  {
     return async dispatch => { 
         try {
             const measureData: Measure = {
                 measure: measure,
+                description: description,
                 id: id,
                 yeas: yeas,
-                neas: neas
-                // createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                neas: neas,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
               };
               const res = await firebase.firestore().collection('/measures').add(measureData);
               const Id = await firebase.firestore().collection('/measures').doc(res.id).update({id:res.id});

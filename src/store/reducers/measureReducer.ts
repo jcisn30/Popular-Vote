@@ -4,9 +4,11 @@ import { Measure, MeasureAction, SET_MEASURE, SET_ERROR, UPDATE_MEASURE } from '
 
 const initialState: Measure = {
     measure: '',
+    description: '',
     id: 'dsfsdf',
-    yeas: 0,
-    neas: 0,
+    yeas: 1,
+    neas: 1,
+    createdAt: ''
 }
 
   export default (state = initialState, action: MeasureAction) => {

@@ -87,49 +87,45 @@ const styles = StyleSheet.create({
     }
 });
 const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
-    const { navigation } = props;
-    // const [username, setUsername] = useState<string>('');
-    // const [password, setPassword] = useState<string>('');
-    const [email, setEmail] = useState('');
+  //login props, state, variables, dispatch, use selector
+  const { navigation } = props;
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { error } = useSelector((state: RootState) => state.auth);
-    const back = () => navigation.navigate(AppScreens.Welcome);
+  const back = () => navigation.navigate(AppScreens.Welcome);
 
+  //dispatch error
     useEffect(() => {
         return () => {
           if(error) {
             dispatch(setError(''));
-            
           }
         }
       }, [error, dispatch]);
 
-
+      //submit handler for user login via firebase
       const submitHandler = (email: string, password: string) => {
-        
         if(error) {
           dispatch(setError(''));
-          
         }
         setLoading(true);
         dispatch(signin({ email, password }, () => setLoading(false)));
       }
 
+      //check to see if user is signed in, if so head to main page
       function checkSignIn(){
         firebase.auth().onAuthStateChanged(function(user) {
            if (user) {
               navigation.navigate("Main")
             //   console.log(user);
            } else {
-              
           }
      })
    }
-    
-    
 
+   // old login call
     // const Login = (email: string, password: string) => {
     //     try {
     //       firebase
@@ -147,7 +143,7 @@ const LoginScreen: React.FunctionComponent<LoginScreenProps> = (props) => {
 return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={styles.container}>
-           
+           {/* back x button */}
             <TouchableOpacity style={styles.btnClose}  onPress={back}>
                 <Text style={styles.closeText}>X</Text>
             </TouchableOpacity>
@@ -157,24 +153,20 @@ return (
             {/* <Text style={styles.txtLogin}>Login</Text> */}
             </View>
 
-            
+            {/*login form*/}
             <View style={styles.txtLoginScreenContainer} >
             <Text style={styles.txtError}>{error}</Text>
                 <TextInput
-                    // value={username}
-                    // placeholder="username"
-                    
-                    // onChangeText={(text) => setUsername(text)}
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            placeholder="Email address"
-            style={styles.textInput}
+                    value={email}
+                    onChangeText={(text) => setEmail(text)}
+                    placeholder="Email address"
+                    style={styles.textInput}
                 />
                 <TextInput value={password} placeholder="password" secureTextEntry={true} style={styles.textInput}  onChangeText={(text) => setPassword(text)} />
                 <Text style={styles.button} onPress={() => {submitHandler(email, password); checkSignIn()}}>Login</Text>
             </View>
            
-            
+            {/*signup or go to main page to voice free opinion*/}
             <View style={styles.btnSignupContainer}>
                 {/* <Text>Or</Text> */}
                 <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Signup, { email})}>Signup</Text>
