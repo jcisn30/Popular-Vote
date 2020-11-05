@@ -1,22 +1,31 @@
 import React, { FC } from 'react';
 import { StyleSheet, View, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { AppScreens } from '../../navigators/AuthFlowNavigator';
 import { RootState } from '../../store';
 import { signout } from '../../store/actions/authActions';
+import { Updates } from 'expo';
 
 const Profile: FC = () => {
+    //dispatch
     const dispatch = useDispatch();
+    //user root state
     const { authenticated, user } = useSelector((state: RootState) => state.auth);
+    //logout click handler
+    
     const logoutClickHandler = () => {
         dispatch(signout());
+        Updates.reload();
+
       }
 
     return (
+        //profile page view
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={[styles.body]}>
             <Text style={styles.userText}>Hello {user?.firstName}</Text>
             <View style={styles.btnSignoutContainer}>
-            <Text style={styles.button} onPress={() =>  logoutClickHandler()}>Sign out</Text>
+            <Text style={styles.button} onPress={() => logoutClickHandler()}>Sign out</Text>
             </View>
         </View>
         </TouchableWithoutFeedback>

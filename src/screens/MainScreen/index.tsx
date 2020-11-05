@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View, Text, StatusBar } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AnimatedTabBar, {TabsConfigsType} from 'curved-bottom-navigation-bar';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
@@ -8,8 +7,8 @@ import { Ionicons } from '@expo/vector-icons';
 import Home from '../../screens/HomeScreen';
 import Profile from '../../screens/ProfileScreen';
 import Data from '../../screens/DataScreen';
-import { withTheme } from 'react-native-elements';
 
+//main page bottom nav setup
 const tabs: TabsConfigsType = {
     Home: {
         icon: ({ progress }) => <Ionicons name={'md-home'} size={24}/>

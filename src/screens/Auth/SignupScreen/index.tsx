@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     btnLoginContainer: {
         alignSelf: 'center',
         marginTop: 0,
-        marginBottom: 80
+        marginBottom: 225
     },
     container: {
         flex: 1,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 90,
+        marginTop: 150,
         width: '70%',
     },
     txtUsername: {
@@ -76,7 +76,8 @@ const styles = StyleSheet.create({
         borderColor: 'grey',
         marginTop: 4,
         marginBottom: 10,
-        padding: 10,
+        padding: 12,
+        fontSize:18,
         width: '100%',
         
     },
@@ -229,7 +230,7 @@ return (
                 {/* <Text style={styles.SignUpText}>have an account?</Text> */}
                 <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Login)}>Login</Text>
                 {/* <Text>or just give your free opinion</Text> */}
-                <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Main)}>Share your voice</Text>
+                {/* <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Main)}>Share your voice</Text> */}
             </View>
         </SafeAreaView>
     </TouchableWithoutFeedback>

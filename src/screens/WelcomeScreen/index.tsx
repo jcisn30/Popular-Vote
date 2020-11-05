@@ -28,7 +28,7 @@ const data = [
       bg: '#ffffff',
     },
     {
-      title: 'How it works',
+      title: '',
       image: require('../../../assets/welcome-2.png'),
       bg: '#ffffff',
     },

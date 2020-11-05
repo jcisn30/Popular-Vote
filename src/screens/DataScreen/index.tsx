@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import { StyleSheet, View, Text, Keyboard, TouchableWithoutFeedback, SafeAreaView, TextInput, FlatList, ScrollView, TouchableHighlight, Modal, Alert, TouchableOpacity, ImageBackground } from 'react-native';
 import { Button, Overlay } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,52 +9,26 @@ import { SET_YEASSELECTED, User } from '../../store/types';
 import firebase from '../../firebase/config';
 import measureReducer from '../../store/reducers/measureReducer';
 import { useLinkBuilder } from '@react-navigation/native';
-import {
-  PieChart,
-} from 'react-native-chart-kit'
+import { PieChart } from 'react-native-svg-charts'
+
 
 
 const Data = () => {
+  //user root state
     const { user } = useSelector((state: RootState) => state.auth);
-    // const { yeas } = useSelector((state: RootState) => state.measure);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [measure, setMeasure] = useState('');
-    const [description, setDescription] = useState('');
-    const [yeasSelect, setyeasSelected] = useState('');
+    //measure id state
     const [id, setId] = useState('');
-    const [yeas, setYeas] = useState(0);
-    const [neas, setNeas] = useState(0);
-    const [selected, setSelected] = useState('');
-    // const [yeasSelected, setyeasSelected] = useState([]);
+    //measure array list
     const [measureList, setMeasureList] = useState(Array());
+    //dispatch
     const dispatch = useDispatch();
+    //error root state
     const { error } = useSelector((state: RootState) => state.measure);
-
+    //get current user
     const User =  firebase.auth().currentUser?.uid
     
 
-    //dispatch adding measure error
-    useEffect(() => {
-        return () => {
-          if(error) {
-            dispatch(setMeasureError(''));
-          }
-        }
-      }, [error, dispatch]);
-
-      //submit handler adding new ballot measure
-      const submitHandler = (measure: string, description: string, id: string, yeas: number, neas: number, createdAt: any ) => {
-        if(error) {
-          dispatch(setMeasureError(''));
-        }
-         if (measure.length > 0) {
-        dispatch(addMeasure(measure, description, id, yeas, neas, createdAt, error));
-        }
-      }
-
-
-
-      //get measure array items for flatlist
+      //get measure array items for pie charts
       useEffect(() => {
         const subscriber = firebase.firestore()
           .collection('measures')
@@ -80,88 +55,62 @@ const Data = () => {
         
 
       
-     //flatlist items structure
-      const Item = ({ measure, description, yeas, neas, onNeasPress, onYeasPress, style, stylen}) => (
+     //piechart items structure
+      const Item = ({ measure}) => (
         <View style={styles.item} >
           <Text style={styles.title} >{measure}</Text>
-            <PieChart
-            data={measure}
-            width={80}
-            height={220}
-            // chartConfig={chartConfig}
-            accessor= {yeas}
-            backgroundColor="transparent"
-            paddingLeft="15"
-            />
-        </View>
+      </View>
+        
       );
 
   
       
-      //render item for flatlist, plus firebase call to update yeas and neas count
+      //render item and pie chart settings
       const renderItem   =  ({ item })  => {
-   
-        return(
+        const data = [item.yeas,item.neas]
+        const colors = ['#d00909', '#000000']
+        const pieData = data
+            .filter((value) => value > 0)
+            .map((value, index) => ({
+                value,
+                svg: {
+                  fill: colors[index] ,
+                    
+                },
+               
+                key: `pie-${index}`,
+            }))
+
           
-        <Item measure={item.measure} description={item.description} yeas={item.yeas} neas={item.neas}   />
+        return(
+          //return item and piechart views
+          <>
+          <Item measure={item.measure} />
+          <PieChart style={{ height: 250,marginTop:0, marginBottom:50, shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,}} data={pieData} outerRadius={'70%'}
+                innerRadius={10}  />
+       
+        </>
       )
       
         }
 
         
    return (
-        
+       //main data page view structure 
     <SafeAreaView style={styles.container}>
       <View style={styles.list}>
         <Text style={styles.headingA}>Ballot Measures</Text>
+        <Text style={styles.headingB}>Red:Yeas Black:Neas</Text>
         <FlatList style={{ width: 375 }}
           data={measureList}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           extraData={setId}
     />
-    
     </View>
-        <Text style={styles.button}
-                onPress={() => {
-                  setModalVisible(true);
-                }}>
-                <Text>Add a ballot measure</Text>
-        </Text>
-        <View style = {styles.modal}>
-    <Modal
-        animationType="slide"
-        transparent={false}
-        visible={modalVisible}
-        >
-        
-        
-        <View style={styles.txtHomeScreenContainer}>
-        <Text style={[styles.heading]}>We The People</Text>
-        
-        {/* <Text style={styles.txtError}>{error} </Text> */}
-        <TextInput
-                value={measure}
-                placeholder="enter ballot measure name"
-                style={styles.textInput}
-                onChangeText={(text) => setMeasure(text)}
-            />
-            <TextInput
-                value={description}
-                placeholder="enter ballot measure description"
-                style={styles.textInput}
-                onChangeText={(text) => setDescription(text)}
-            />
-             <Text style={styles.measureButton} onPress={() => {submitHandler( measure, description, id, neas, yeas, selected ); setModalVisible(!modalVisible)}}>Add Measure</Text>
-             <Text style={styles.homeButton}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}>
-                <Text>Back to Home</Text>
-        </Text>
-          </View>
-      </Modal>
-      </View>
    </SafeAreaView>
    
     )
@@ -243,18 +192,16 @@ const styles = StyleSheet.create({
     },
     item: {
       backgroundColor: '#ffffff',
-      padding: 20,
-      marginVertical: 8,
+      paddingTop: 20,
+      marginVertical: 0,
       marginHorizontal: 2,
-      borderColor: 'grey',
-      borderStyle: 'solid',
-      borderWidth: 1,
       alignItems: 'center', 
       justifyContent: 'center',
     },
     title: {
       fontSize: 22,
-      paddingBottom: 20,
+      paddingBottom: 0,
+      marginBottom: 0
     },
     headingA: {
       paddingTop: 0,
@@ -262,6 +209,12 @@ const styles = StyleSheet.create({
       fontSize: 25,
       backgroundColor: '#ffffff',
   },
+  headingB: {
+    paddingTop: 0,
+    textAlign: 'center',
+    fontSize: 20,
+    backgroundColor: '#ffffff',
+},
   myButton:{
     padding: 5,
     height: 20,

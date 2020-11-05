@@ -104,5 +104,3 @@ interface SetNeasAction {
 export type AuthAction = SetUserAction | SetLoadingAction | SignOutAction | SetErrorAction | NeedVerificationAction | SetSuccessAction ;
 
 export type MeasureAction = SetMeasureAction | SetErrorAction | SetYeasAction | SetNeasAction | UpdateMeasureAction ;
-
-export type YeasSelectedAction = SetYeasSelectedAction;

@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     btnSignupContainer: {
         alignItems: 'center',
         marginTop: 20,
-        marginBottom: 120
+        marginBottom: 275
     },
     container: {
         flex: 1,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 90,
+        marginTop: 175,
         width: '70%',
     },
     image: {
@@ -56,7 +56,8 @@ const styles = StyleSheet.create({
         borderColor: 'grey',
         marginTop: 4,
         marginBottom: 10,
-        padding: 10,
+        padding: 12,
+        fontSize:18,
         width: '100%',
     },
     textInputContainer: {
@@ -171,7 +172,7 @@ return (
                 {/* <Text>Or</Text> */}
                 <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Signup, { email})}>Signup</Text>
                 {/* <Text>or just give your free opinion</Text> */}
-                <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Main)}>Share your voice</Text>
+                {/* <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Main)}>Share your voice</Text> */}
             </View>
         </SafeAreaView>
     </TouchableWithoutFeedback>
