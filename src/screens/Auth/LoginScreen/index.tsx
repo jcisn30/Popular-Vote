@@ -14,7 +14,7 @@ interface LoginScreenProps {
 const styles = StyleSheet.create({
     btnSignupContainer: {
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 90,
         marginBottom: 275
     },
     container: {
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 175,
+        marginTop: 265,
         width: '70%',
     },
     image: {
