@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     btnSignupContainer: {
         alignItems: 'center',
         marginTop: 90,
-        marginBottom: 275
+        marginBottom: 265
     },
     container: {
         flex: 1,
