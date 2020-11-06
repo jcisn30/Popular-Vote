@@ -29,7 +29,7 @@ const data = [
     },
     {
       title: '',
-      image: require('../../../assets/welcome-2.png'),
+      image: require('../../../assets/welcome-7.png'),
       bg: '#ffffff',
     },
   ];
