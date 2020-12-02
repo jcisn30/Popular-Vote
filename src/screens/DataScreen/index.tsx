@@ -9,7 +9,8 @@ import { SET_YEASSELECTED, User } from '../../store/types';
 import firebase from '../../firebase/config';
 import measureReducer from '../../store/reducers/measureReducer';
 import { useLinkBuilder } from '@react-navigation/native';
-import { PieChart } from 'react-native-svg-charts'
+import { PieChart } from 'react-native-svg-charts';
+
 
 
 
@@ -75,22 +76,23 @@ const Data = () => {
                 value,
                 svg: {
                   fill: colors[index] ,
-                    
                 },
-               
                 key: `pie-${index}`,
             }))
 
-          
+            
+           
         return(
           //return item and piechart views
           <>
           <Item measure={item.measure} />
+          <Text style={styles.yeasCount}>Yeas:{item.yeas}</Text>
+          <Text style={styles.neasCount}>Neas:{item.neas}</Text>
           <PieChart style={{ height: 250,marginTop:0, marginBottom:50, shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.8,
     shadowRadius: 4,}} data={pieData} outerRadius={'70%'}
-                innerRadius={10}  />
+                innerRadius={10}></PieChart>
        
         </>
       )
@@ -144,6 +146,16 @@ const styles = StyleSheet.create({
     textInputContainer: {
         width: '100%',
         marginTop: 0
+    },
+    yeasCount: {
+      textAlign: 'center',
+      color: '#d00909',
+      marginTop: 2,
+      fontWeight: '500'
+    },
+    neasCount: {
+      textAlign: 'center',
+      fontWeight: '500'
     },
     button: {
         marginTop: 20,

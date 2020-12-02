@@ -1,11 +1,12 @@
 import React, { useState, FormEvent, useEffect  } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SafeAreaView, StyleSheet, Text, TextInput, Alert, Button, View, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TextInput, Alert, View, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { AppScreens, AuthStackParamList } from '../../../navigators/AuthFlowNavigator';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { signin, setError, sendPasswordResetEmail } from '../../../store/actions/authActions';
 import { RootState } from '../../../store';
 import firebase from '../../../firebase/config';
+import { Button, Input, Icon } from 'react-native-elements';
 
 type LoginScreenNavigationProps = StackNavigationProp<AuthStackParamList, AppScreens.Login>;
 interface LoginScreenProps {
@@ -14,7 +15,7 @@ interface LoginScreenProps {
 const styles = StyleSheet.create({
     btnSignupContainer: {
         alignItems: 'center',
-        marginTop: 90,
+        marginTop: 100,
         marginBottom: 265
     },
     container: {
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     },
     txtError: {
         color: '#d00909',
-        marginTop: 15,
+        marginTop: 30,
         marginBottom: 10
     }
 });
@@ -146,7 +147,10 @@ return (
         <SafeAreaView style={styles.container}>
            {/* back x button */}
             <TouchableOpacity style={styles.btnClose}  onPress={back}>
-                <Text style={styles.closeText}>X</Text>
+                {/* <Text style={styles.closeText}> */}
+                  <Icon
+              name='arrow-back'  />
+                    {/* </Text> */}
             </TouchableOpacity>
 
             <View style={styles.login}>
@@ -157,19 +161,42 @@ return (
             {/*login form*/}
             <View style={styles.txtLoginScreenContainer} >
             <Text style={styles.txtError}>{error}</Text>
-                <TextInput
+
+            <Input
+                    placeholder='Email Address' value={email} onChangeText={(text) => setEmail(text)} 
+                    leftIcon={
+                      <Icon
+              name='email'  />
+                    } />
+                {/* <TextInput
                     value={email}
                     onChangeText={(text) => setEmail(text)}
                     placeholder="Email address"
                     style={styles.textInput}
-                />
-                <TextInput value={password} placeholder="password" secureTextEntry={true} style={styles.textInput}  onChangeText={(text) => setPassword(text)} />
-                <Text style={styles.button} onPress={() => {submitHandler(email, password); checkSignIn()}}>Login</Text>
+                /> */}
+                 <Input
+                    placeholder='Password' value={password} secureTextEntry={true} onChangeText={(text) => setPassword(text)} 
+                    leftIcon={
+                      <Icon
+              name='lock'  />
+                    } />
+                {/* <TextInput value={password} placeholder="password" secureTextEntry={true} style={styles.textInput}  onChangeText={(text) => setPassword(text)} /> */}
+                
+                <Button raised buttonStyle={{
+              backgroundColor:'#d00909',
+              paddingTop: 10,
+              paddingBottom: 10,
+              paddingLeft: 17,
+              paddingRight: 17,
+              alignItems: 'center'
+            }}  title="Login"  onPress={() => {submitHandler(email, password); checkSignIn()}} />
+                {/* <Text style={styles.button} onPress={() => {submitHandler(email, password); checkSignIn()}}>Login</Text> */}
             </View>
            
             {/*signup or go to main page to voice free opinion*/}
             <View style={styles.btnSignupContainer}>
                 {/* <Text>Or</Text> */}
+               
                 <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Signup, { email})}>Signup</Text>
                 {/* <Text>or just give your free opinion</Text> */}
                 {/* <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Main)}>Share your voice</Text> */}
