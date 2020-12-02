@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SafeAreaView, StyleSheet, Text, TextInput, Alert, Button, View, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TextInput, Alert, View, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { AppScreens, AuthStackParamList } from '../../../navigators/AuthFlowNavigator';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { signup, setError } from '../../../store/actions/authActions';
 import { RootState } from '../../../store';
 import firebase from '../../../firebase/config';
+import { Button, Input, Icon } from 'react-native-elements';
 
 
 
@@ -22,7 +23,7 @@ interface SignupScreenProps {
 const styles = StyleSheet.create({
     btnLoginContainer: {
         alignSelf: 'center',
-        marginTop: 20,
+        marginTop: 70,
         marginBottom: 200
     },
     container: {
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     },
     txtError: {
         color: '#d00909',
-        marginTop: 15,
+        marginTop: 65,
         marginBottom: 10
     }
 });
@@ -195,7 +196,9 @@ return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <SafeAreaView style={styles.container}>
              <TouchableOpacity style={styles.btnClose}  onPress={back}>
-                <Text style={styles.closeText}>X</Text>
+             <Icon
+              name='arrow-back'  />
+                {/* <Text style={styles.closeText}>X</Text> */}
             </TouchableOpacity>
 
             <View style={styles.signUp}>
@@ -205,29 +208,58 @@ return (
 
             <View style={styles.txtSignupScreenContainer}>
             <Text style={styles.txtError}>{error}</Text>
-            <TextInput
+            <Input
+                    placeholder='first name' value={firstName} onChangeText={(text) => setFirstName(text)} 
+                    leftIcon={
+                      <Icon
+              name='person'  />
+                    } />
+            {/* <TextInput
                     value={firstName}
                     placeholder="first name"
                     style={styles.textInput}
                     onChangeText={(text) => setFirstName(text)}
-                />
-            <TextInput
+                /> */}
+
+                    <Input
+                    placeholder='Email Address' value={email} onChangeText={(text) => setEmail(text)} 
+                    leftIcon={
+                      <Icon
+              name='email'  />
+                    } />
+            {/* <TextInput
                     value={email}
                     placeholder="email address"
                     style={styles.textInput}
                     onChangeText={(text) => setEmail(text)}
-                />
-                
+                /> */}
+
+                    <Input
+                    placeholder='Password' value={password} secureTextEntry={true}  onChangeText={(text) => setPassword(text)}
+                    leftIcon={
+                      <Icon
+              name='lock'  />
+            } />
 				
 
-<TextInput value={password} placeholder="password" secureTextEntry={true} style={styles.textInput}  onChangeText={(text) => setPassword(text)} />
+{/* <TextInput value={password} placeholder="password" secureTextEntry={true} style={styles.textInput}  onChangeText={(text) => setPassword(text)} /> */}
+<Button raised buttonStyle={{
+              backgroundColor:'#d00909',
+              paddingTop: 10,
+              paddingBottom: 10,
+              paddingLeft: 17,
+              paddingRight: 17,
+              alignItems: 'center'
+            }}  title="Sign Up"  onPress={() => {submitHandler( email, password); checkSignIn()}} />
+
+
                 
-                
-                <Text style={styles.button} onPress={() => {submitHandler( email, password); checkSignIn()}}>Sign Up</Text>
+                {/* <Text style={styles.button} onPress={() => {submitHandler( email, password); checkSignIn()}}>Sign Up</Text> */}
             </View>
 
             <View style={styles.btnLoginContainer}>
                 {/* <Text style={styles.SignUpText}>have an account?</Text> */}
+                
                 <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Login)}>Login</Text>
                 {/* <Text>or just give your free opinion</Text> */}
                 {/* <Text style={styles.OptionText} onPress={() => navigation.navigate(AppScreens.Main)}>Share your voice</Text> */}

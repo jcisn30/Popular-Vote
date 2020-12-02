@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
 import { addMeasure, setMeasureError } from '../../store/actions/measureActions';
 import firebase from '../../firebase/config';
+import { Button, Icon, Input } from 'react-native-elements';
 
 
 
@@ -187,13 +188,27 @@ const Home = () => {
           extraData={setId}
     />
     </View>
+
+    
       {/* button to display modal */}
-        <Text style={styles.button}
+    <View style={{marginTop: 20, marginBottom: 80}}>
+      <Button raised buttonStyle={{
+              backgroundColor:'#d00909',
+              paddingTop: 10,
+              paddingBottom: 10,
+              paddingLeft: 17,
+              paddingRight: 17,
+            }} title="Add a ballot measure"   onPress={() => {
+              setModalVisible(true);
+            }}
+          />
+</View>
+        {/* <Text style={styles.button}
                 onPress={() => {
                   setModalVisible(true);
                 }}>
                 <Text>Add a ballot measure</Text>
-        </Text>
+        </Text> */}
     {/* modal settings / view */}
     
     <Modal
@@ -204,27 +219,68 @@ const Home = () => {
          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.txtHomeScreenContainer}>
         <Text style={[styles.heading]}>We The People</Text>
-        <TextInput
+        <View style={{width:325, marginTop: 20}}>
+        <Input
+       
+          placeholder='enter ballot measure name' value={measure} onChangeText={(text) => setMeasure(text)}
+          leftIcon={
+            <Icon
+  name='edit'  />
+          } />
+        </View>
+        {/* <TextInput
                 value={measure}
                 clearButtonMode="always"
                 placeholder="enter ballot measure name"
                 style={styles.textInput}
                 onChangeText={(text) => setMeasure(text)}
-            />
-            <TextInput
+            /> */}
+
+      <View style={{width:325, marginBottom: 20}}>
+        <Input
+       
+          placeholder='enter ballot measure description' value={description} onChangeText={(text) => setDescription(text)}
+          leftIcon={
+            <Icon
+  name='subject'  />
+          } />
+        </View>
+            {/* <TextInput
                 value={description}
                 clearButtonMode="always"
                 placeholder="enter ballot measure description"
                 style={styles.textInput}
                 onChangeText={(text) => setDescription(text)}
-            />
-             <Text style={styles.measureButton} onPress={() => {submitHandler( measure, description, id, neas, yeas, selected ); setModalVisible(!modalVisible)}}>Add Measure</Text>
-             <Text style={styles.homeButton}
+            /> */}
+
+            <Button raised buttonStyle={{
+              backgroundColor:'#d00909',
+              paddingTop: 10,
+              paddingBottom: 10,
+              paddingLeft: 20,
+              paddingRight: 20,
+            }} title="Add Measure"  onPress={() => {submitHandler( measure, description, id, neas, yeas, selected ); setModalVisible(!modalVisible)}} />
+
+             {/* <Text style={styles.measureButton} onPress={() => {submitHandler( measure, description, id, neas, yeas, selected ); setModalVisible(!modalVisible)}}>Add Measure</Text> */}
+
+            <View style={{marginTop: 30}}>
+             <Button raised buttonStyle={{
+              backgroundColor:'#d00909',
+              paddingTop: 10,
+              paddingBottom: 10,
+              paddingLeft: 17,
+              paddingRight: 17,
+            }} title="Back to Home"   onPress={() => {
+              setModalVisible(!modalVisible);
+            }}/>
+</View>
+
+             {/* <Text style={styles.homeButton}
                 onPress={() => {
                   setModalVisible(!modalVisible);
                 }}>
                 <Text>Back to Home</Text>
-        </Text>
+        </Text> */}
           </View>
           </TouchableWithoutFeedback>
       </Modal>
@@ -381,7 +437,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   heading: {
-    paddingTop: 40,
+    paddingTop: 0,
     textAlign: 'center',
     fontFamily: 'alex-brush',
     fontSize: 40,

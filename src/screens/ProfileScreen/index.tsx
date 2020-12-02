@@ -5,6 +5,7 @@ import { AppScreens } from '../../navigators/AuthFlowNavigator';
 import { RootState } from '../../store';
 import { signout } from '../../store/actions/authActions';
 import { Updates } from 'expo';
+import { Button } from 'react-native-elements';
 
 const Profile: FC = () => {
     //dispatch
@@ -23,9 +24,20 @@ const Profile: FC = () => {
         //profile page view
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={[styles.body]}>
+            <Text style={{fontSize: 27, textAlign: 'center'}}>Settings</Text>
             <Text style={styles.userText}>Hello {user?.firstName}</Text>
-            <View style={styles.btnSignoutContainer}>
+            {/* <View style={styles.btnSignoutContainer}>
             <Text style={styles.button} onPress={() => logoutClickHandler()}>Sign out</Text>
+            </View> */}
+            <View style={{width: 120, alignSelf: 'center', marginTop: 20}}>
+            <Button raised buttonStyle={{
+              backgroundColor:'#d00909',
+              paddingTop: 10,
+              paddingBottom: 10,
+              paddingLeft: 17,
+              paddingRight: 17,
+              alignItems: 'center'
+            }}  title="Sign Out"  onPress={() => logoutClickHandler()} />
             </View>
         </View>
         </TouchableWithoutFeedback>
